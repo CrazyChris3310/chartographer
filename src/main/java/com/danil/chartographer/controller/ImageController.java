@@ -1,7 +1,9 @@
 package com.danil.chartographer.controller;
 
+import com.danil.chartographer.domain.Response;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
-import org.springframework.boot.SpringApplication;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.imageio.ImageIO;
@@ -9,9 +11,11 @@ import javax.websocket.server.PathParam;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
+@Slf4j
 @RestController
 @RequestMapping("/chartas")
 public class ImageController {
@@ -24,6 +28,7 @@ public class ImageController {
     }
 
     @PostMapping()
+    @ResponseStatus(HttpStatus.CREATED)
     public String createChart(@RequestParam int width, @RequestParam int height) throws IOException {
         File uploadDir = new File(pathForSaving);
         if (!uploadDir.exists()) {
@@ -61,5 +66,19 @@ public class ImageController {
 
     }
 
+    @GetMapping
+    public List<String> getEverithing(@RequestParam boolean exception) throws IOException {
+        if (exception)
+            throw new IOException("Request required the exception");
+
+        return Collections.singletonList("Fireball");
+    }
+
+    @ExceptionHandler(IOException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public Response handleResponse(IOException e) {
+        log.error(e.getMessage());
+        return new Response(e.getMessage());
+    }
 
 }
