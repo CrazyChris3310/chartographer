@@ -9,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 
 @Slf4j
@@ -40,8 +39,7 @@ public class ImageController {
                              @RequestParam int height,
                              @RequestBody byte[] data) throws IOException {
 
-        File chartaFile = imageService.getImageFile(id);
-        BufferedImage chartas = imageService.readImage(chartaFile);
+        BufferedImage chartas = imageService.getImage(id);
 
         if (x >= chartas.getWidth() || x < 0 || y < 0 || y >= chartas.getHeight()) {
             throw new SizeException("Coordinates of fragment are beyond the charta borders");
@@ -56,7 +54,7 @@ public class ImageController {
         }
 
         imageService.copy(0, 0, x, y, width, height, fragment, chartas);
-        imageService.save(chartas, chartaFile);
+        imageService.save(chartas, id);
 
     }
 
@@ -71,8 +69,7 @@ public class ImageController {
             throw new SizeException("Sizes of charta are too big");
         }
 
-        File chartaFile = imageService.getImageFile(id);
-        BufferedImage chartas = imageService.readImage(chartaFile);
+        BufferedImage chartas = imageService.getImage(id);
 
         BufferedImage result = new BufferedImage(width, height, chartas.getType());
 
@@ -82,8 +79,8 @@ public class ImageController {
     }
 
     @DeleteMapping("/{id}")
-    public void removeChart(@PathVariable String id) {
-
+    public void removeChart(@PathVariable String id) throws IOException {
+        imageService.removeImage(id);
     }
 
     // FIXME: code looks very alike in exceptions handlers

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.nio.file.Files;
 import java.util.List;
 import java.util.UUID;
 
@@ -24,7 +25,7 @@ public class ImageService {
     public String create(int width, int height) throws IOException {
         File uploadDir = new File(pathForSaving);
         if (!uploadDir.exists()) {
-            uploadDir.mkdir();
+            uploadDir.mkdirs();
         }
 
         BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);
@@ -46,8 +47,8 @@ public class ImageService {
      * @param destination image to which content is being copied
      */
     public void copy(int x0, int y0, int x1, int y1, int width, int height, BufferedImage source, BufferedImage destination) {
-        int realWidth = Math.min(destination.getWidth() - x1, width);
-        int realHeight = Math.min(destination.getHeight() - y1, height);
+        int realWidth =  Math.min(Math.min(source.getWidth() - x0, width), destination.getWidth() - x1);
+        int realHeight = Math.min(Math.min(source.getHeight() - y0, height), destination.getHeight() - y1);
 
         for (int i = 0; i < realWidth; ++i) {
             for (int j = 0; j < realHeight; ++j) {
@@ -56,21 +57,22 @@ public class ImageService {
         }
     }
 
-    public void save(BufferedImage image, File file) throws IOException {
-        ImageIO.write(image, "bmp", file);
+    public void save(BufferedImage image, String name) throws IOException {
+        ImageIO.write(image, "bmp", new File(pathForSaving + "/" + name + ".bmp"));
     }
 
-    public BufferedImage readImage(File file) throws IOException {
-        return ImageIO.read(file);
-    }
-
-    public File getImageFile(String id) {
+    private File getImageFile(String id) {
         File file = new File(pathForSaving + "/" + id + ".bmp");
         if (!file.exists()) {
             throw new NoSuchIdException("No charta with id " + id + " can be found");
         }
 
         return file;
+    }
+
+    public BufferedImage getImage(String id) throws IOException {
+        File file = getImageFile(id);
+        return ImageIO.read(file);
     }
 
     public BufferedImage decryptImage(byte[] data) throws IOException {
@@ -88,4 +90,12 @@ public class ImageService {
         return encrypted;
     }
 
+    public void removeImage(String id) throws IOException {
+        File file = getImageFile(id);
+        Files.delete(file.toPath());
+    }
+
+    public String getPathForSaving() {
+        return pathForSaving;
+    }
 }
