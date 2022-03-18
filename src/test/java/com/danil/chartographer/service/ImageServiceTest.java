@@ -14,7 +14,7 @@ import java.nio.file.Path;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest(args = "src/main/resources/test/images")
+@SpringBootTest(args = "src/test/resources/images")
 class ImageServiceTest {
 
     @Autowired
