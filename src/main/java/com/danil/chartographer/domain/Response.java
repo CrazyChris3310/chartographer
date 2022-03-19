@@ -1,21 +1,24 @@
 package com.danil.chartographer.domain;
 
+/**
+ * Response is used to be returned by server, containing a message
+ */
 public class Response {
 
-    private String message;
+  private String message;
 
-    public Response() {
-    }
+  public Response() {
+  }
 
-    public Response(String message) {
-        this.message = message;
-    }
+  public Response(String message) {
+    this.message = message;
+  }
 
-    public String getMessage() {
-        return message;
-    }
+  public String getMessage() {
+    return message;
+  }
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
+  public void setMessage(String message) {
+    this.message = message;
+  }
 }
