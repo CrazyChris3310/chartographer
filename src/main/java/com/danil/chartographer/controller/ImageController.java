@@ -5,6 +5,7 @@ import com.danil.chartographer.exception.NoSuchIdException;
 import com.danil.chartographer.exception.SizeException;
 import com.danil.chartographer.service.ImageService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -32,7 +33,7 @@ public class ImageController {
   }
 
   /**
-   * Creates a new black bmp image in the folder with given {@code width} and {@code height}
+   * Creates a new black bmp image in the directory with given {@code width} and {@code height}
    *
    * @return id of newly created image
    * @throws IOException if an error occurs during writing
@@ -118,7 +119,7 @@ public class ImageController {
   }
 
   /**
-   * Removes an image with given id from folder
+   * Removes an image with given id
    *
    * @param id id of an image to remove
    * @throws IOException if an I/O error occurs

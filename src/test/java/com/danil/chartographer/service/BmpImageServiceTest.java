@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest(args = "src/test/resources/images")
-class ImageServiceTest {
+class BmpImageServiceTest {
 
   @Autowired
   private ImageService service;
