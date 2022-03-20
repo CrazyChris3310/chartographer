@@ -25,12 +25,6 @@ class BmpImageServiceTest {
   @Autowired
   private ImageService service;
 
-  private void clearDirectory(File dir) throws IOException {
-    for (String s : Objects.requireNonNull(dir.list())) {
-      Files.delete(Path.of(dir.getAbsolutePath(), "/", s));
-    }
-  }
-
   @Test
   void createDirectory() throws IOException {
     File uploadPath = new File(service.getPathForSaving());
@@ -42,6 +36,12 @@ class BmpImageServiceTest {
 
     service.create(100, 200);
     assertTrue(new File(service.getPathForSaving()).exists());
+  }
+
+  private void clearDirectory(File dir) throws IOException {
+    for (String s : Objects.requireNonNull(dir.list())) {
+      Files.delete(Path.of(dir.getAbsolutePath(), "/", s));
+    }
   }
 
   @Test

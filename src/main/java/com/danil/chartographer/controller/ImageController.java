@@ -5,7 +5,6 @@ import com.danil.chartographer.exception.NoSuchIdException;
 import com.danil.chartographer.exception.SizeException;
 import com.danil.chartographer.service.ImageService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
